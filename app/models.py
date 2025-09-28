@@ -183,11 +183,14 @@ class Companias(Base):
     correo_electronico = db.Column(db.String(256))
     solicitudes = db.relationship('Solicitudes', backref='compania', uselist=True)
 
-
     def save(self):
         if not self.id:
             db.session.add(self)
         db.session.commit()
+
+    @staticmethod
+    def get_all():
+        return Companias.query.all()
 
 class Solicitudes (Base):
     __tablename__ = "solicitudes"
@@ -196,13 +199,11 @@ class Solicitudes (Base):
     numero_riesgo = db.Column(db.Integer)
     solicitud = db.Column(db.BigInteger)
     patente = db.Column(db.String(7))
-    telefono = db.Column(db.String(256))
-    id_compania = db.Column(db.Integer, db.ForeignKey('solicitudes.id'))
+    id_compania = db.Column(db.Integer, db.ForeignKey('companias.id'))
     id_estado = db.Column(db.Integer, db.ForeignKey('estados.id'))
     usuario_alta = db.Column(db.String(256))
     usuario_modificacion = db.Column(db.String(256))
     fotos = db.relationship('Fotos', backref='solicitud', uselist=True)
-
 
     def save(self):
         if not self.id:
@@ -229,10 +230,9 @@ class Nodos(Base):
     nombre = db.Column(db.String(50))
     final = db.Column(db.Boolean)
     id_estado = db.Column(db.Integer, db.ForeignKey('estados.id'))
-    id_tipo_vehiculo = db.Column(db.Integer, db.ForeignKey('nodos.id'))
+    id_tipo_vehiculo = db.Column(db.Integer, db.ForeignKey('tiposvehiculos.id'))
     fotos = db.relationship('Fotos', backref='nodo', uselist=True)
 
-    
     def save(self):
         if not self.id:
             db.session.add(self)

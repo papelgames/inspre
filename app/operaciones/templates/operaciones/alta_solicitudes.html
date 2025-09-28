@@ -1,0 +1,45 @@
+{% extends "base_template.html" %}
+{% from "_render_elements.html" import render_input %}
+
+{% block title %}
+    INSPRE | Alta de solicitudes
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="offset-md-3 col-md-6">
+		<h1 class="display-4">Alta de solicitudes</h1> 
+	</div>
+	<div class="offset-md-3 col-md-6">    
+		<form action="" method="post" class = "mx-auto mt-4" enctype="multipart/form-data" novalidate>	
+			{{ form.hidden_tag() }}
+			<div class="row mb-3">
+				<div class="col-md-12">
+					{{ render_input(form.nombre_asegurado,'', id= "nombre_asegurado", class="form-control", placeholder="Ingrese el nombre del asegurado" ) }}
+				</div>
+				<div class="col-md-6">	
+					{{ render_input(form.vehiculo,'', id= "vehiculo", class="form-control", placeholder="Ingrese el vehículo" ) }}
+				</div>
+				<div class="col-md-6">	
+					{{ render_input(form.numero_riesgo,'', id= "numero_riesgo", class="form-control", placeholder="Ingrese el número de riesgo en póliza") }}
+				</div>
+				<div class="col-md-6">	
+					{{ render_input(form.solicitud,'', id= "solicitud", class="form-control", placeholder = "Ingrese el número de solicitud" ) }}
+				</div>
+				<div class="col-md-6">	
+					{{ render_input(form.patente,'', id= "patente" , class="form-control", placeholder="Ingrese la patente" ) }}
+				</div>
+				<div class="col-md-6">
+					{{ render_input(form.id_compania, id= "id_compania", class="form-control" ) }}
+				</div>
+				
+				<div class="col-md-12">
+					<button type="submit" class="btn btn-primary">Guardar</button>
+				</div>
+			</div>
+		</form>
+    </div>
+</div>
+
+
+{% endblock %}

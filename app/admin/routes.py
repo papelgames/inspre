@@ -7,9 +7,9 @@ from werkzeug.utils import secure_filename
 
 from app.auth.decorators import admin_required, not_initial_status, nocache
 from app.auth.models import Users
-from app.models import  Permisos, Roles, Personas, Estados
+from app.models import  Permisos, Roles, Personas, Estados, Companias
 from . import admin_bp
-from .forms import UserAdminForm, PermisosUserForm, RolesUserForm, DatosPersonasForm, TiposForm, PermisosForm, RolesForm, PermisosSelectForm, EstadosForm
+from .forms import UserAdminForm, PermisosUserForm, RolesUserForm, DatosPersonasForm, TiposForm, PermisosForm, RolesForm, PermisosSelectForm, EstadosForm, CompaniasForm
 
 from app.common.funciones import listar_endpoints, renderizar_modelo_con_instancia
 
@@ -348,3 +348,52 @@ def alta_estados():
     #falta paginar tareas
     estados = Estados.get_all()    
     return render_template("admin/alta_estados.html", form=form, estados=estados)
+
+@admin_bp.route("/admin/altasolicitudes/", methods = ['GET', 'POST'])
+@login_required
+@admin_required
+@not_initial_status
+def alta_solicitudes():
+    form = EstadosForm()
+    
+    if form.validate_on_submit():
+        clave = form.clave.data
+        descripcion = form.descripcion.data
+        tabla = form.tabla.data
+        inicial = form.inicial.data
+        final = form.final.data
+        
+        estado = Estados(clave=clave,
+                         descripcion=descripcion,
+                         tabla=tabla,
+                         inicial=inicial,
+                         final=final,
+                         usuario_alta=current_user.username)
+        
+        estado.save()
+        flash("Nuevo estado creado", "alert-success")
+        return redirect(url_for('admin.alta_estados'))
+    #falta paginar tareas
+    estados = Estados.get_all()    
+    return render_template("admin/alta_estados.html", form=form, estados=estados)
+
+@admin_bp.route("/admin/altacompanias/", methods = ['GET', 'POST'])
+@login_required
+@admin_required
+@not_initial_status
+def alta_companias():
+    form = CompaniasForm()
+    companias = Companias.get_all()
+    if form.validate_on_submit():
+        id_ssn = form.id_ssn.data
+        nombre_compania = form.nombre_compania.data
+
+
+        compania = Companias(id_ssn = id_ssn,
+            nombre_compania=nombre_compania)
+
+        compania.save()
+        flash("Nueva compania creada", "alert-success")
+        return redirect(url_for('admin.alta_companias'))
+
+    return render_template("admin/alta_companias.html", form=form, companias=companias)

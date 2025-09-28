@@ -1,4 +1,3 @@
-
 import logging
 from logging.handlers import SMTPHandler
 
@@ -51,6 +50,10 @@ def create_app(settings_module):
 
     from .consultas import consultas_bp
     app.register_blueprint(consultas_bp)
+
+    from .operaciones import operaciones_bp
+    app.register_blueprint(operaciones_bp)
+
 
 
     # Custom error handlers

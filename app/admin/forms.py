@@ -52,3 +52,21 @@ class EstadosForm(FlaskForm):
     tabla = StringField('Tabla de referencia', validators=[DataRequired('Escriba una descripción'),Length(max=50)])
     inicial = BooleanField('¿Es inicial?')
     final = BooleanField('¿Es final?')
+
+class CompaniasForm(FlaskForm):
+    id_ssn = IntegerField('Id SSN', validators=[DataRequired('Debe cargar el id de la compañia en SSN' )])
+    nombre_compania = StringField('Compañía', validators=[DataRequired('Debe cargar el nombre de la compañia' )])
+
+
+# class SolicitudesForm(FlaskForm):
+#     nombre_asegurado = db.Column(db.String(50))
+#     vehiculo = db.Column(db.String(60))
+#     numero_riesgo = db.Column(db.Integer)
+#     solicitud = db.Column(db.BigInteger)
+#     patente = db.Column(db.String(7))
+#     telefono = db.Column(db.String(256))
+#     id_compania = db.Column(db.Integer, db.ForeignKey('solicitudes.id'))
+#     id_estado = db.Column(db.Integer, db.ForeignKey('estados.id'))
+    
+
+
