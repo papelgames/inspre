@@ -47,6 +47,9 @@
                       <a href="{{ url_for('admin.crear_roles') }}" class="list-group-item list-group-item-action ms-3">Roles</a>
                       <a href="{{ url_for('admin.alta_estados') }}" class="list-group-item list-group-item-action ms-3">Estados</a>
                       <a href="{{ url_for('admin.alta_companias') }}" class="list-group-item list-group-item-action ms-3">Compañías</a>
+                      <a href="{{ url_for('admin.alta_nodos') }}" class="list-group-item list-group-item-action ms-3">Nodos</a>
+                      <a href="{{ url_for('admin.alta_tipos_vehiculos') }}" class="list-group-item list-group-item-action ms-3">Tipos de vehículos</a>
+
 
 
                   </div>
@@ -57,6 +60,14 @@
               </a>
               <div class="collapse" id="menu4">
                   <a href="{{ url_for('consultas.consulta_personas') }}" class="list-group-item list-group-item-action ms-3">Consulta de personas</a>
+
+                </div>
+                <a href="#" class="list-group-item list-group-item-action" data-bs-toggle="collapse" data-bs-target="#menu5" aria-expanded="false">
+                  OPERACIONES
+                  <span>⮟</span>
+              </a>
+              <div class="collapse" id="menu5">
+                  <a href="{{ url_for('operaciones.alta_solicitudes') }}" class="list-group-item list-group-item-action ms-3">Nueva solicitud</a>
 
                 </div>
             <div class="mt-auto">

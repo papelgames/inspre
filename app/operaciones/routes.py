@@ -7,7 +7,7 @@ from flask_login import login_required, current_user
 
 from app.auth.decorators import admin_required, not_initial_status
 from app.auth.models import Users
-from app.models import  Estados, Companias, Solicitudes
+from app.models import  Estados, Companias, Solicitudes, TiposVehiculos
 
 from . import operaciones_bp 
 from .forms import AltaSolicitudesForm
@@ -28,6 +28,15 @@ def companias_select():
         select_companias.append(sub_select_companias)
     return select_companias
 
+#creo una tupla para usar en el campo select del form que quiera que necesite los tipos de vehículos
+def tipos_vehiculos_select():
+    tipos_vehiculos = TiposVehiculos.get_all()
+    select_tipos_vehiculos =[(0,'Seleccionar Tipo de vehículo')]
+    for rs in tipos_vehiculos:
+        sub_select_tipos_vehiculos = (rs.clave, rs.descripcion)
+        select_tipos_vehiculos.append(sub_select_tipos_vehiculos)
+    return select_tipos_vehiculos
+
 @operaciones_bp.route("/operaciones/altasolicitudes/", methods = ['GET', 'POST'])
 @login_required
 @not_initial_status
@@ -35,7 +44,8 @@ def alta_solicitudes():
 
     form = AltaSolicitudesForm()
     form.id_compania.choices = companias_select()
-
+    form.clave.choices = tipos_vehiculos_select()
+    
     if form.validate_on_submit():
         nombre_asegurado = form.nombre_asegurado.data
         vehiculo = form.vehiculo.data
@@ -43,7 +53,9 @@ def alta_solicitudes():
         solicitud = form.solicitud.data
         patente = form.patente.data
         id_compania = form.id_compania.data
+        clave = form.clave.data
         estado = Estados.get_first_by_clave_tabla(1, 'solicitudes')
+        tipo_vehiculo = TiposVehiculos.get_id_by_clave(clave)
         nueva_solicitud = Solicitudes(nombre_asegurado = nombre_asegurado,
                                     vehiculo = vehiculo,
                                     numero_riesgo = numero_riesgo,
@@ -54,6 +66,9 @@ def alta_solicitudes():
         
         estado.solicitudes.append(nueva_solicitud) 
         estado.save()
+        tipo_vehiculo.solicitudes.append(nueva_solicitud)
+        tipo_vehiculo.save()
+
 
         flash("La solicitud se ha guardado correctamente.", "alert-success")
         

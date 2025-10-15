@@ -199,6 +199,7 @@ class Solicitudes (Base):
     numero_riesgo = db.Column(db.Integer)
     solicitud = db.Column(db.BigInteger)
     patente = db.Column(db.String(7))
+    id_tipo_vehiculo = db.Column(db.Integer, db.ForeignKey('tiposvehiculos.id'))
     id_compania = db.Column(db.Integer, db.ForeignKey('companias.id'))
     id_estado = db.Column(db.Integer, db.ForeignKey('estados.id'))
     usuario_alta = db.Column(db.String(256))
@@ -214,7 +215,9 @@ class Fotos(Base):
     __tablename__ = "fotos"
     fecha_hora = db.Column(db.DateTime)
     nombre_celular = db.Column(db.String(50))
-    geolocalizacion = db.Column(db.String(100))
+    latitud = db.Column(db.String(100))
+    longitud = db.Column(db.String(100))
+    precision = db.Column(db.String(100))
     id_solicitud = db.Column(db.Integer, db.ForeignKey('solicitudes.id'))
     id_nodo = db.Column(db.Integer, db.ForeignKey('nodos.id'))
 
@@ -223,12 +226,13 @@ class Fotos(Base):
             db.session.add(self)
         db.session.commit()
 
-
 class Nodos(Base):
     __tablename__ = "nodos"
     orden = db.Column(db.Integer)
     nombre = db.Column(db.String(50))
     final = db.Column(db.Boolean)
+    usuario_alta = db.Column(db.String(256))
+    usuario_modificacion = db.Column(db.String(256))
     id_estado = db.Column(db.Integer, db.ForeignKey('estados.id'))
     id_tipo_vehiculo = db.Column(db.Integer, db.ForeignKey('tiposvehiculos.id'))
     fotos = db.relationship('Fotos', backref='nodo', uselist=True)
@@ -238,6 +242,10 @@ class Nodos(Base):
             db.session.add(self)
         db.session.commit()
 
+    @staticmethod
+    def get_all():
+        return Nodos.query.all()
+
 class TiposVehiculos(Base):
     __tablename__ = "tiposvehiculos"
     clave = db.Column(db.String(2))
@@ -245,3 +253,18 @@ class TiposVehiculos(Base):
     usuario_alta = db.Column(db.String(256))
     usuario_modificacion = db.Column(db.String(256))
     nodos = db.relationship('Nodos', backref='tipo_vehiculo', uselist=True)
+    solicitudes = db.relationship('Solicitudes', backref='tipo_vehiculo', uselist=True)
+    
+
+    def save(self):
+        if not self.id:
+            db.session.add(self)
+        db.session.commit()
+    
+    @staticmethod
+    def get_all():
+        return TiposVehiculos.query.all()
+    
+    @staticmethod
+    def get_id_by_clave(clave):
+        return TiposVehiculos.query.filter_by(clave = clave).first()

@@ -49,7 +49,7 @@ class PermisosSelectForm(FlaskForm):
 class EstadosForm(FlaskForm):
     clave = IntegerField('Clave', validators=[DataRequired('Escriba una clave')])
     descripcion = StringField('Nuevo estado', validators=[DataRequired('Escriba una descripción'),Length(max=50)])
-    tabla = StringField('Tabla de referencia', validators=[DataRequired('Escriba una descripción'),Length(max=50)])
+    tabla = StringField('Tabla de referencia', validators=[DataRequired('Escriba la tabla de referencia'),Length(max=50)])
     inicial = BooleanField('¿Es inicial?')
     final = BooleanField('¿Es final?')
 
@@ -57,16 +57,13 @@ class CompaniasForm(FlaskForm):
     id_ssn = IntegerField('Id SSN', validators=[DataRequired('Debe cargar el id de la compañia en SSN' )])
     nombre_compania = StringField('Compañía', validators=[DataRequired('Debe cargar el nombre de la compañia' )])
 
-
-# class SolicitudesForm(FlaskForm):
-#     nombre_asegurado = db.Column(db.String(50))
-#     vehiculo = db.Column(db.String(60))
-#     numero_riesgo = db.Column(db.Integer)
-#     solicitud = db.Column(db.BigInteger)
-#     patente = db.Column(db.String(7))
-#     telefono = db.Column(db.String(256))
-#     id_compania = db.Column(db.Integer, db.ForeignKey('solicitudes.id'))
-#     id_estado = db.Column(db.Integer, db.ForeignKey('estados.id'))
-    
+class NodosForm(FlaskForm):
+    orden = IntegerField('Orden', validators=[DataRequired('Escriba el orden del nodo')])
+    nombre = StringField('Nombre', validators=[DataRequired('Escriba una descripción'),Length(max=50)])
+    final = BooleanField('¿Es final?')
+    clave = SelectField('Tipo de vehículo', choices =[( '','Seleccionar tipo de vehículo')], coerce = str, default = None, validators=[DataRequired('Seleccione el tipo de vehículo')])
 
 
+class TiposVehiculosForm(FlaskForm):
+    clave = StringField('Clave', validators=[DataRequired('Escriba una clave')])
+    descripcion = StringField('Nuevo estado', validators=[DataRequired('Escriba una descripción'),Length(max=50)])

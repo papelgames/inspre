@@ -14,3 +14,4 @@ class AltaSolicitudesForm(FlaskForm):
     solicitud = IntegerField('Número de solicitud')
     patente = StringField('Patente')
     id_compania = SelectField('Compañías', choices =[( 0,'Seleccionar compañía')], coerce = int, default = None, validators=[DataRequired('Seleccione compania')])
+    clave = SelectField('Tipo de vehículo', choices =[( '','Seleccionar tipo de vehículo')], coerce = str, default = None, validators=[DataRequired('Seleccione el tipo de vehículo')])

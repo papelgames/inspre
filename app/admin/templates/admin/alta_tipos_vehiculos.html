@@ -1,0 +1,59 @@
+{% extends "base_template.html" %}
+{% from "_render_elements.html" import render_input %}
+
+{% block title %}
+    INSPRE | Alta de tipos de vehículos
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="offset-md-3 col-md-6">
+		<h1>Alta de tipos de vehículos</h1>
+
+		<form action="" method="post" enctype="multipart/form-data" novalidate>	
+            {{ form.hidden_tag() }}
+			{{ render_input(form.clave,'', id= "clave" , class="form-control") }}
+			{{ render_input(form.descripcion,'', id= "descripcion" , class="form-control", placeholder="Descpcion del tipo de vehículo" ) }}
+
+			<button type="submmit" class="btn btn-primary" >Guardar</button>
+			
+		</form>
+	</div>
+
+</div>
+{% if tipos_vehiculos %}
+	<div class="offset-md-3 col-md-6">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th scope="col">ID</th>
+					<th scope="col">CLAVE</th>
+					<th scope="col">DESCRIPCION</th>
+					<th scope="col">ACCION</th>
+					
+				</tr>
+			</thead>
+			
+			<tbody>
+				{% for tipo_vehiculo in tipos_vehiculos %}
+					<tr>
+						<th scope="row">{{ tipo_vehiculo.id }}</th>
+						<td> {{ tipo_vehiculo.clave }}</td>
+						<td> {{ tipo_vehiculo.descripcion }}</td>
+						<td>
+							<div class="dropdown">
+								<button class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
+									Acción
+							</button>
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item"  href="#">Modificar</a></li>
+							</ul>
+						</td>
+						
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+{% endif %}
+{% endblock %}

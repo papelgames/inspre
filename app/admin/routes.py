@@ -7,9 +7,9 @@ from werkzeug.utils import secure_filename
 
 from app.auth.decorators import admin_required, not_initial_status, nocache
 from app.auth.models import Users
-from app.models import  Permisos, Roles, Personas, Estados, Companias
+from app.models import  Permisos, Roles, Personas, Estados, Companias, Nodos, TiposVehiculos
 from . import admin_bp
-from .forms import UserAdminForm, PermisosUserForm, RolesUserForm, DatosPersonasForm, TiposForm, PermisosForm, RolesForm, PermisosSelectForm, EstadosForm, CompaniasForm
+from .forms import UserAdminForm, PermisosUserForm, RolesUserForm, DatosPersonasForm, TiposForm, PermisosForm, RolesForm, PermisosSelectForm, EstadosForm, CompaniasForm, NodosForm, TiposVehiculosForm
 
 from app.common.funciones import listar_endpoints, renderizar_modelo_con_instancia
 
@@ -42,6 +42,15 @@ def roles_select():
         sub_select_rol = (str(rs.id), rs.descripcion)
         select_rol.append(sub_select_rol)
     return select_rol
+
+#creo una tupla para usar en el campo select del form que quiera que necesite los tipos de vehículos
+def tipos_vehiculos_select():
+    tipos_vehiculos = TiposVehiculos.get_all()
+    select_tipos_vehiculos =[(0,'Seleccionar Tipo de vehículo')]
+    for rs in tipos_vehiculos:
+        sub_select_tipos_vehiculos = (rs.clave, rs.descripcion)
+        select_tipos_vehiculos.append(sub_select_tipos_vehiculos)
+    return select_tipos_vehiculos
 
 
 @admin_bp.route("/admin/")
@@ -397,3 +406,50 @@ def alta_companias():
         return redirect(url_for('admin.alta_companias'))
 
     return render_template("admin/alta_companias.html", form=form, companias=companias)
+
+@admin_bp.route("/admin/altanodos/", methods = ['GET', 'POST'])
+@login_required
+@admin_required
+@not_initial_status
+def alta_nodos():
+    form = NodosForm()
+    nodos = Nodos.get_all()
+    form.clave.choices = tipos_vehiculos_select()
+    if form.validate_on_submit():
+        orden = form.orden.data
+        nombre = form.nombre.data
+        final = form.final.data
+        clave = form.clave.data
+        
+        tipo_vehiculo = TiposVehiculos.get_id_by_clave(clave)
+        nuevo_nodo = Nodos(orden = orden,
+                    nombre=nombre,
+                    final = final)
+
+        tipo_vehiculo.nodos.append(nuevo_nodo)
+        tipo_vehiculo.save()
+
+        flash("Nuevo nodo creado", "alert-success")
+        return redirect(url_for('admin.alta_nodos'))
+
+    return render_template("admin/alta_nodos.html", form=form, nodos=nodos)
+
+@admin_bp.route("/admin/altatiposvehiculos/", methods = ['GET', 'POST'])
+@login_required
+@admin_required
+@not_initial_status
+def alta_tipos_vehiculos():
+    form = TiposVehiculosForm()
+    tipos_vehiculos = TiposVehiculos.get_all()
+    if form.validate_on_submit():
+        clave = form.clave.data
+        descripcion = form.descripcion.data
+
+
+        tipo_vehiculo = TiposVehiculos(clave = clave,
+                             descripcion=descripcion)
+
+        tipo_vehiculo.save()
+        flash("Nuevo tipo de vehículo creado", "alert-success")
+        return redirect(url_for('admin.alta_tipos_vehiculos'))
+    return render_template("admin/alta_tipos_vehiculos.html", form=form, tipos_vehiculos=tipos_vehiculos)
