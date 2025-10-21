@@ -46,7 +46,7 @@ def roles_select():
 #creo una tupla para usar en el campo select del form que quiera que necesite los tipos de vehículos
 def tipos_vehiculos_select():
     tipos_vehiculos = TiposVehiculos.get_all()
-    select_tipos_vehiculos =[(0,'Seleccionar Tipo de vehículo')]
+    select_tipos_vehiculos =[('','Seleccionar Tipo de vehículo')]
     for rs in tipos_vehiculos:
         sub_select_tipos_vehiculos = (rs.clave, rs.descripcion)
         select_tipos_vehiculos.append(sub_select_tipos_vehiculos)

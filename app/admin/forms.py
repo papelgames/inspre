@@ -61,7 +61,7 @@ class NodosForm(FlaskForm):
     orden = IntegerField('Orden', validators=[DataRequired('Escriba el orden del nodo')])
     nombre = StringField('Nombre', validators=[DataRequired('Escriba una descripción'),Length(max=50)])
     final = BooleanField('¿Es final?')
-    clave = SelectField('Tipo de vehículo', choices =[( '','Seleccionar tipo de vehículo')], coerce = str, default = None, validators=[DataRequired('Seleccione el tipo de vehículo')])
+    clave = SelectField('Tipo de vehículo', choices =[], coerce = str, default = None, validators=[DataRequired('Seleccione el tipo de vehículo')])
 
 
 class TiposVehiculosForm(FlaskForm):

@@ -211,13 +211,23 @@ class Solicitudes (Base):
             db.session.add(self)
         db.session.commit()
 
+    @staticmethod
+    def get_id_by_solcitud(solicitud):
+        return Solicitudes.query.filter_by(solicitud = solicitud).first()
+    
+    @staticmethod
+    def get_all():
+        return Solicitudes.query.all()
+
 class Fotos(Base):
     __tablename__ = "fotos"
+    nombre = db.Column(db.String(100))
     fecha_hora = db.Column(db.DateTime)
-    nombre_celular = db.Column(db.String(50))
+    nombre_celular = db.Column(db.String(100))
     latitud = db.Column(db.String(100))
     longitud = db.Column(db.String(100))
     precision = db.Column(db.String(100))
+    camara = db.Column(db.String(100))
     id_solicitud = db.Column(db.Integer, db.ForeignKey('solicitudes.id'))
     id_nodo = db.Column(db.Integer, db.ForeignKey('nodos.id'))
 
@@ -245,6 +255,16 @@ class Nodos(Base):
     @staticmethod
     def get_all():
         return Nodos.query.all()
+    
+    @staticmethod
+    def get_nodos_by_id_tipo_vehiculo_all_paginated(id_tipo_vehiculo, page=1, per_page=1): 
+        return Nodos.query.filter_by(id_tipo_vehiculo = id_tipo_vehiculo)\
+            .paginate(page=page, per_page=per_page, error_out=False) 
+    
+    @staticmethod
+    def get_nodos_by_id_tipo_vehiculo(id_tipo_vehiculo):
+        return Nodos.query.filter_by(id_tipo_vehiculo = id_tipo_vehiculo).all()
+
 
 class TiposVehiculos(Base):
     __tablename__ = "tiposvehiculos"
@@ -255,7 +275,6 @@ class TiposVehiculos(Base):
     nodos = db.relationship('Nodos', backref='tipo_vehiculo', uselist=True)
     solicitudes = db.relationship('Solicitudes', backref='tipo_vehiculo', uselist=True)
     
-
     def save(self):
         if not self.id:
             db.session.add(self)

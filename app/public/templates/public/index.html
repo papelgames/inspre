@@ -4,6 +4,10 @@ INSPRE | Sistema de gestión
 {% endblock %}
 {% block content %}
 <div class="container mt-4">
+
+
+  {% for nodo in nodos_x_tipo_vehiculo.items %}
+  <h1>Nodo: {{ nodo.nombre }}</h1>
   <h2>Tomar y subir foto</h2>
   
   <!-- Botón para iniciar cámara -->
@@ -50,5 +54,45 @@ INSPRE | Sistema de gestión
   <!-- Estado por ahora no lo quiero mostrar-->
   <!-- <div id="status" style="margin-top:15px; padding:10px; border-radius:5px;"></div> -->
 </div>
+  {% endfor %}
+
+
+
+<nav aria-label="Page navigation example">
+	<ul class="pagination justify-content-center">
+            <!-- <li class="page-item disabled">
+                <a class="page-link" href="#">Anterior</a>
+            </li> -->
+        {%- for page in nodos_x_tipo_vehiculo.iter_pages() %}
+			{% if page %}
+
+				{% if page != nodos_x_tipo_vehiculo.page %}
+            
+					<li class="page-item"><a class="page-link" href="{{ url_for('public.index', solicitud=solicitud,tipo_vehiculo=tipo_vehiculo ,page=page) }}">{{ page }}</a>
+				{% else %}
+					<li class="page-item active">
+						<span class="page-link">
+							{{ page }}
+							<span class="sr-only"></span>
+						</span>
+					</li>
+                {% endif %}
+			{% endif %}
+		{%- endfor %}
+        <!-- <li class="page-item">
+            <a class="page-link" href="#">Siguiente</a>
+        </li> -->
+	</ul>
+</nav>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
 {% endblock %}

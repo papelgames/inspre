@@ -8,7 +8,7 @@
     <title>{% block title %}
         {% endblock %}</title>
     {% block styles %}
-        <link rel="shortcut icon" href="{{ url_for('static', filename='imgs/favicon.png') }}">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='imgs/favicon.ico') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
         
@@ -60,6 +60,8 @@
               </a>
               <div class="collapse" id="menu4">
                   <a href="{{ url_for('consultas.consulta_personas') }}" class="list-group-item list-group-item-action ms-3">Consulta de personas</a>
+                  <a href="{{ url_for('consultas.consulta_solicitudes') }}" class="list-group-item list-group-item-action ms-3">Consulta de solicitudes</a>
+
 
                 </div>
                 <a href="#" class="list-group-item list-group-item-action" data-bs-toggle="collapse" data-bs-target="#menu5" aria-expanded="false">

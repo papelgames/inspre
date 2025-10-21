@@ -11,26 +11,172 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='imgs/favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap/bootstrap.min.css') }}">
     
-    <style>
-        body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
+<style>
+        /* Paleta de Colores:
+         - Azul Profundo: #004AAD
+         - Verde Aqua: #16A085
+         - Amarillo Brillante: #F39C12
+         - Blanco: #FFFFFF
+         - Gris Oscuro Cálido: #4A4A4A
+         */
+        
+        * {
             margin: 0;
-            background-image: url("{{ url_for('static', filename='imgs/fondo.png') }}"); /* Ruta de la imagen */
-            background-size: cover; /* Escala la imagen para que cubra toda la pantalla */
-            background-repeat: no-repeat; /* Evita que la imagen se repita */
-            background-attachment: fixed; /* Fija la imagen al hacer scroll */
-            background-position: center; /* Centra la imagen */
+            padding: 0;
+            box-sizing: border-box;
         }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .login-container {
+            width: 100%;
+            max-width: 380px;
+            padding: 35px 30px;
+            border-radius: 24px;
+            background-color: #004AAD;
+            color: #FFFFFF;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+            background-color: #FFFFFF;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 32px;
+            color: #16A085;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .logo-icon::after {
+            content: '✓';
+        }
+        
+        .app-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        
+        .tagline {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 35px;
+            font-weight: 300;
+        }
+        
         .login-form {
             width: 100%;
-            max-width: 400px;
-            padding: 20px;
-            background-color:rgba(255, 255, 255, 0.8);
+        }
+        
+        .input-group {
+            margin-bottom: 18px;
+            text-align: center;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: left;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid transparent;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-size: 15px;
+            background-color: #FFFFFF;
+            color: #4A4A4A;
+            transition: all 0.3s ease;
+            display: block;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #F39C12;
+            box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.1);
+        }
+        
+        .input-group input::placeholder {
+            color: #999;
+        }
+        
+        .login-button {
+            width: 100%;
+            padding: 15px;
+            background-color: #F39C12;
+            color: #004AAD;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .login-button:hover {
+            background-color: #e68d0f;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
+        }
+        
+        .login-button:active {
+            transform: translateY(0);
+        }
+        
+        .links-group {
+            margin-top: 25px;
+            text-align: center;
+        }
+        
+        .links-group a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+        
+        .links-group a:hover {
+            color: #FFFFFF;
+            text-decoration: underline;
+        }
+        .login-form,
+        .input-group,
+        .input-group input,
+        .login-button {
+            width: 100%;
+            display: block;
+        }
+        /* Responsive */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 25px;
+            }
+            
+            .app-title {
+                font-size: 28px;
+            }
         }
     </style>
     {% endblock %}

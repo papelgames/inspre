@@ -7,7 +7,7 @@ from flask_login import login_required, current_user
 
 from app.auth.decorators import admin_required, not_initial_status
 from app.auth.models import Users
-from app.models import  Estados, Personas
+from app.models import  Estados, Personas, Solicitudes
 
 from . import consultas_bp 
 from .forms import BusquedaForm
@@ -42,3 +42,15 @@ def consulta_personas():
             lista_de_personas =[]
 
     return render_template("consultas/consulta_personas.html", form = form, criterio = criterio, lista_de_personas= lista_de_personas )
+
+@consultas_bp.route("/consultas/consultasolicitudes/", methods = ['GET', 'POST'])
+@login_required
+@not_initial_status
+def consulta_solicitudes():
+    solicitudes = Solicitudes.get_all()
+    page = int(request.args.get('page', 1))
+    per_page = current_app.config['ITEMS_PER_PAGE']
+
+
+    return render_template("consultas/consulta_solicitudes.html", solicitudes= solicitudes )
+

@@ -22,7 +22,7 @@ def control_vencimiento (fecha):
 #creo una tupla para usar en el campo select del form que quiera que necesite las companias
 def companias_select():
     companias = Companias.get_all()
-    select_companias =[(0,'Seleccionar Compania')]
+    select_companias =[(0,'Seleccionar Compañía')]
     for rs in companias:
         sub_select_companias = (rs.id, rs.nombre_compania)
         select_companias.append(sub_select_companias)
