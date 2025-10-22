@@ -14,8 +14,8 @@ import json
 logger = logging.getLogger(__name__)
 
 
-@public_bp.route("/", methods = ['GET', 'POST'])
-def index():
+@public_bp.route("/inspeccion", methods = ['GET', 'POST'])
+def inspeccion():
     tipo_vehiculo = request.args.get('tipo_vehiculo','')
     solicitud = request.args.get('solicitud','')
     page = int(request.args.get('page', 1))
@@ -72,7 +72,10 @@ def index():
 
     
                 flash("Imagen guardada correctamente", "alert-success")
-                return redirect(url_for('public.index', solicitud=solicitud,tipo_vehiculo=tipo_vehiculo, page=page+1) )
+                return redirect(url_for('public.inspeccion', solicitud=solicitud,tipo_vehiculo=tipo_vehiculo, page=page+1) )
 
-    return render_template("public/index.html", nodos_x_tipo_vehiculo=nodos_x_tipo_vehiculo, solicitud=solicitud, tipo_vehiculo=tipo_vehiculo)
-      
+    return render_template("public/inspeccion.html", nodos_x_tipo_vehiculo=nodos_x_tipo_vehiculo, solicitud=solicitud, tipo_vehiculo=tipo_vehiculo)
+
+@public_bp.route("/")
+def index():
+    return render_template("public/index.html")
