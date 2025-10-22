@@ -78,7 +78,7 @@ class Estados(Base):
     usuario_alta = db.Column(db.String(256))
     usuario_modificacion = db.Column(db.String(256))
     personas = db.relationship('Personas', backref='estado_personas', uselist=True)
-    users = db.relationship('Users', backref='estado_users', uselist=True)
+    user = db.relationship('Users', backref='estado_users', uselist=True)
     nodos = db.relationship('Nodos', backref='estado_nodo', uselist=True)
     solicitudes = db.relationship('Solicitudes', backref='estado_solicitud', uselist=True)
    
