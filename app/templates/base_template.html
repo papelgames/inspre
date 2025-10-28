@@ -92,9 +92,9 @@
           {% endif %}
       </nav>
 {{ render_messages(messages) }}
-<body>
 
 {% block content %}{% endblock %}
+  </div>
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/bootstrap/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
