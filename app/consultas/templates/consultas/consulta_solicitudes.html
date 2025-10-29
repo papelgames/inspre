@@ -46,6 +46,7 @@
                 </button>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item"  href="{{url_for('public.inspeccion', solicitud=solicitud.solicitud,tipo_vehiculo=solicitud.tipo_vehiculo.clave, nodo=0) }}">IR</a></li>
+                    <li><a class="dropdown-item"  href="{{url_for('consultas.generar_reporte_pdf', numero_solicitud=solicitud.solicitud) }}">Reporte</a></li>
                     <a class="dropdown-item"  href="#">Seleccionar</a>
                 </ul>
             </td>

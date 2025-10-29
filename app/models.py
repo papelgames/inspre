@@ -216,6 +216,10 @@ class Solicitudes (Base):
         return Solicitudes.query.filter_by(solicitud = solicitud).first()
     
     @staticmethod
+    def get_all_by_solcitud(solicitud):
+        return Solicitudes.query.filter_by(solicitud = solicitud).all()
+    
+    @staticmethod
     def get_all():
         return Solicitudes.query.all()
 

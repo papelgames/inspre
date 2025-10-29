@@ -140,6 +140,20 @@ iniciarCamaraBtn.addEventListener("click", () => {
   inicioContainer.style.display = "none";
   videoContainer.style.display = "block";
   controlesContainer.style.display = "block";
+  
+  // Entrar en modo fullscreen
+  if (videoContainer.requestFullscreen) {
+    videoContainer.requestFullscreen().catch(err => {
+      console.log("No se pudo entrar en fullscreen:", err);
+    });
+  } else if (videoContainer.webkitRequestFullscreen) { // Safari
+    videoContainer.webkitRequestFullscreen();
+  } else if (videoContainer.mozRequestFullScreen) { // Firefox
+    videoContainer.mozRequestFullScreen();
+  } else if (videoContainer.msRequestFullscreen) { // IE/Edge
+    videoContainer.msRequestFullscreen();
+  }
+  
   iniciarCamara(camaraActual);
   solicitarGeolocalizacion();
 });
@@ -208,6 +222,17 @@ capturarBtn.addEventListener("click", async () => {
       stream.getTracks().forEach(track => track.stop());
     }
     
+    // Salir de fullscreen
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    }
+    
     videoContainer.style.display = "none";
     controlesContainer.style.display = "none";
     previewContainer.style.display = "block";
@@ -236,6 +261,20 @@ rehacerBtn.addEventListener("click", () => {
   metadatos = {};
   gpsObtenido = false;
   mostrarStatus("Lista para nueva captura");
+  
+  // Volver a entrar en fullscreen
+  if (videoContainer.requestFullscreen) {
+    videoContainer.requestFullscreen().catch(err => {
+      console.log("No se pudo entrar en fullscreen:", err);
+    });
+  } else if (videoContainer.webkitRequestFullscreen) {
+    videoContainer.webkitRequestFullscreen();
+  } else if (videoContainer.mozRequestFullScreen) {
+    videoContainer.mozRequestFullScreen();
+  } else if (videoContainer.msRequestFullscreen) {
+    videoContainer.msRequestFullscreen();
+  }
+  
   iniciarCamara(camaraActual);
   solicitarGeolocalizacion();
 });

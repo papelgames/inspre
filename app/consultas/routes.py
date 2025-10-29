@@ -2,7 +2,7 @@ import logging
 
 from datetime import date, datetime, timedelta
 
-from flask import render_template, redirect, url_for, abort, current_app, flash, request
+from flask import render_template, redirect, url_for, abort, current_app, flash, request, make_response
 from flask_login import login_required, current_user
 
 from app.auth.decorators import admin_required, not_initial_status
@@ -11,7 +11,7 @@ from app.models import  Estados, Personas, Solicitudes
 
 from . import consultas_bp 
 from .forms import BusquedaForm
-
+from weasyprint import HTML
 
 logger = logging.getLogger(__name__)
 
@@ -54,3 +54,22 @@ def consulta_solicitudes():
 
     return render_template("consultas/consulta_solicitudes.html", solicitudes= solicitudes )
 
+@consultas_bp.route("/consultas/report/", methods = ['GET', 'POST'])
+def generar_reporte_pdf():
+    numero_solicitud = request.args.get('numero_solicitud','')
+    # Obtener datos
+    solicitud = Solicitudes.get_all_by_solcitud(numero_solicitud)
+    archivo_dir = current_app.config.get('ARCHIVOS_DIR', 'uploads')
+    # Renderizar HTML con tu plantilla
+    html_string = render_template('consultas/reporte.html', 
+                                  solicitud=solicitud, archivo_dir=archivo_dir, fotos_por_pagina=6)
+    
+    # Convertir a PDF
+    pdf = HTML(string=html_string).write_pdf()
+    
+    # Crear respuesta
+    response = make_response(pdf)
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = f'inline; filename=reporte_{numero_solicitud}.pdf'
+    
+    return response

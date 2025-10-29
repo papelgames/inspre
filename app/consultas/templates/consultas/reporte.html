@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @page {
+            size: A4;
+            margin: 1.5cm;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-size: 10pt;
+            color: #333;
+            line-height: 1.4;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 3px solid #004AAD;
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            width: 120px;
+            margin-bottom: 10px;
+        }
+        
+        .header h1 {
+            color: #004AAD;
+            margin: 10px 0 5px 0;
+            font-size: 24pt;
+        }
+        
+        .header .solicitud-num {
+            font-size: 14pt;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .seccion {
+            margin: 25px 0;
+        }
+        
+        .seccion h2 {
+            background: linear-gradient(135deg, #004AAD 0%, #0062cc 100%);
+            color: white;
+            padding: 10px 15px;
+            margin: 0 0 15px 0;
+            font-size: 14pt;
+            border-radius: 5px;
+        }
+        
+        .datos-tabla {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .datos-tabla th {
+            background-color: #004AAD;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            width: 30%;
+        }
+        
+        .datos-tabla td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+            background-color: #f9f9f9;
+        }
+        
+        .datos-tabla tr:last-child td {
+            border-bottom: none;
+        }
+        
+        /* Grid de fotos - 2x2 */
+        .fotos-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+            page-break-inside: avoid;
+        }
+        
+        .foto-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 10px;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .foto-card h3 {
+            margin: 0 0 8px 0;
+            font-size: 11pt;
+            color: #004AAD;
+            border-bottom: 2px solid #F39C12;
+            padding-bottom: 5px;
+        }
+        
+        .foto-card img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 8px;
+            border: 1px solid #ddd;
+        }
+        
+        .foto-info {
+            font-size: 8.5pt;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .foto-info p {
+            margin: 3px 0;
+        }
+        
+        .foto-info strong {
+            color: #333;
+            font-weight: 600;
+        }
+        
+        /* Forzar salto de página cada 4 fotos */
+        .foto-card:nth-child(4n) {
+            page-break-after: always;
+        }
+        
+        /* Evitar que el último grupo rompa la página */
+        .fotos-grid:last-child .foto-card:last-child {
+            page-break-after: auto;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 2px solid #004AAD;
+            text-align: center;
+            font-size: 9pt;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    {% for riesgo in solicitud %}
+    <div class="header">
+        <img src="{{ url_for('static', filename='imgs/logo.png', _external=True) }}" class="logo" alt="Logo">
+        <h1>Reporte de Inspección</h1>
+        <p class="solicitud-num">Solicitud #{{ riesgo.solicitud }}</p>
+    </div>
+    
+    <div class="seccion">
+        <h2>📋 Datos Generales</h2>
+        <table class="datos-tabla">
+            <tr>
+                <th>Cliente / Asegurado</th>
+                <td>{{ riesgo.nombre_asegurado }}</td>
+            </tr>
+            <tr>
+                <th>Fecha de Solicitud</th>
+                <td>{{ riesgo.created.strftime('%d/%m/%Y %H:%M') if riesgo.created else 'N/A' }}</td>
+            </tr>
+            <tr>
+                <th>Total de Fotografías</th>
+                <td>{{ riesgo.fotos|length }}</td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="seccion">
+        <h2>📷 Registro Fotográfico</h2>
+        
+        <div class="fotos-grid">
+            {% for foto in riesgo.fotos %}
+            <div class="foto-card">
+                <h3>{{ foto.nodo.nombre }}</h3>
+                <img src="file://{{ [archivo_dir, foto.nombre]|join('/') }}" alt="{{ foto.nodo.nombre }}">
+                <div class="foto-info">
+                    <p><strong>📍 GPS:</strong> {{ foto.latitud or 'N/A' }}, {{ foto.longitud or 'N/A' }}</p>
+                    <p><strong>🕐 Fecha:</strong> {{ foto.fecha_hora.strftime('%d/%m/%Y %H:%M') if foto.fecha_hora else 'N/A' }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p><strong>INSPRE</strong> - Inspecciones Digitales. Confianza Garantizada.</p>
+        
+    </div>
+    {% endfor %}
+</body>
+</html>
